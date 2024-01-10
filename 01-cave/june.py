@@ -10,20 +10,35 @@ SURFACE = pygame.display.set_mode((800, 600))
 FPSCLOCK: Clock = pygame.time.Clock()
 
 
-def main():
-    """Main Routine"""
+spaceToggle = False
+walls = 80
+ship_y = 250
+velocity = -25
+score = 0
+slope = randint(1, 6)
 
-    # initialize variables
+# setup holes
+holes = []
+for xpos in range(walls):
+    holes.append(Rect(xpos * 10, 100, 10, 400))
+game_over = False
+
+def init():
+    global spaceToggle
+    global walls
+    global ship_y
+    global velocity
+    global score
+    global slope
+    global game_over
+    global holes
+
+    spaceToggle = False
     walls = 80
     ship_y = 250
     velocity = -25
     score = 0
     slope = randint(1, 6)
-    sysfont = pygame.font.SysFont(None, 36)
-    ship_image = pygame.image.load("ship.png")
-    bang_image = pygame.image.load("bang.png")
-
-    ship_height = ship_image.get_height()
 
     # setup holes
     holes = []
@@ -31,8 +46,26 @@ def main():
         holes.append(Rect(xpos * 10, 100, 10, 400))
     game_over = False
 
+
+def main():
+    """Main Routine"""
+    global spaceToggle
+    global walls
+    global ship_y
+    global velocity
+    global score
+    global slope
+    global game_over
+    global holes
+    # initialize variables
+    init()
+
     while True:
         is_space_down = False
+        sysfont = pygame.font.SysFont(None, 36)
+        ship_image = pygame.image.load("ship.png")
+        bang_image = pygame.image.load("bang.png")
+        ship_height = ship_image.get_height()
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -44,7 +77,11 @@ def main():
         # move my ship
         if not game_over:
             score += 10
-            velocity += -3 if is_space_down else 3
+
+            if spaceToggle == False and not is_space_down:
+                spaceToggle = True
+
+            velocity += -3 if is_space_down and spaceToggle == True else 3
 
             ship_y += velocity
 
@@ -62,6 +99,7 @@ def main():
             # intersect?
             if ship_y < holes[0].top or holes[0].bottom < ship_y + ship_height:
                 game_over = True
+                spaceToggle = False
 
         # render
         SURFACE.fill((0, 255, 0))
@@ -81,6 +119,10 @@ def main():
             SURFACE.blit(bang_image, (0 + ship_image.get_width() / 2 - bang_image.get_width() / 2,
                                       ship_y + ship_image.get_height() / 2 - bang_image.get_height() / 2))
 
+        if game_over and not is_space_down:
+            spaceToggle = True
+        if game_over and is_space_down and spaceToggle == True:
+            init()
         pygame.display.update()
         FPSCLOCK.tick(15)
 

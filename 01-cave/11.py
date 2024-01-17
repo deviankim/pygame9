@@ -15,6 +15,7 @@ def main():
     velocity = 0
     slope = randint(1, 6)
     ship_image = pygame.image.load("ship.png")
+    bang_image = pygame.image.load("bang.png")  # 우주선 폭발 효과 이미지
 
     holes = []
     for xpos in range(walls):
@@ -56,6 +57,9 @@ def main():
             pygame.draw.rect(SURFACE, (0, 0, 0), hole)
 
         SURFACE.blit(ship_image, (0, ship_y))
+
+        if game_over:  # 게임 오버일 때 우주선 폭발 이미지 그리기
+            SURFACE.blit(bang_image, (0, ship_y - 40))
 
         pygame.display.update()
 

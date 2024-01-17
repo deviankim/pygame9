@@ -31,25 +31,26 @@ def main():
             elif event.type == KEYDOWN and event.key == K_SPACE:
                 is_space_down = True
 
-        velocity += -3 if is_space_down else 3
-        ship_y += velocity
+        if not game_over:  # 게임오버가 아닌 경우에만 게임이 진행되도록 조건 지정
+            # 여기서부터
+            velocity += -3 if is_space_down else 3
+            ship_y += velocity
 
-        edge = holes[-1].copy()
-        test = edge.move(0, slope)
-        if test.top <= 0 or test.bottom >= 600:
-            slope = randint(1, 6) * (-1 if slope > 0 else 1)
+            edge = holes[-1].copy()
+            test = edge.move(0, slope)
+            if test.top <= 0 or test.bottom >= 600:
+                slope = randint(1, 6) * (-1 if slope > 0 else 1)
 
-        edge.move_ip(10, slope)
-        holes.append(edge)
+            edge.move_ip(10, slope)
+            holes.append(edge)
 
-        del holes[0]
-        holes = [x.move(-10, 0) for x in holes]
+            del holes[0]
+            holes = [x.move(-10, 0) for x in holes]
 
-        if holes[0].top > ship_y or \
-                holes[0].bottom < ship_y + 80:
-            game_over = True
-
-        print('game_over:', game_over)
+            if holes[0].top > ship_y or \
+                    holes[0].bottom < ship_y + 80:
+                game_over = True
+            # 여기까지 들여쓰기(탭)을 한다.
 
         SURFACE.fill((0, 255, 0))
 

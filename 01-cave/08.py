@@ -1,4 +1,5 @@
 import sys
+from random import randint
 import pygame
 from pygame.locals import QUIT, KEYDOWN, K_SPACE, Rect
 
@@ -12,7 +13,7 @@ def main():
     walls = 80
     ship_y = 250
     velocity = 0
-    slope = 6
+    slope = randint(1, 6)  # 경사도를 [1,2,3,4,5,6] 중에 하나를 랜덤하게 선택
     ship_image = pygame.image.load("ship.png")
 
     holes = []
@@ -35,7 +36,8 @@ def main():
         edge = holes[-1].copy()
         test = edge.move(0, slope)
         if test.top <= 0 or test.bottom >= 600:
-            slope *= -1
+            slope = randint(1, 6) * (-1 if slope > 0 else 1)  # 랜덤 경사도에 (+/-) 부호 전환
+            # TODO: (-1 if slope > 0 else 1) 을 더 간단하게 변경
 
         edge.move_ip(10, slope)
         holes.append(edge)

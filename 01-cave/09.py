@@ -19,6 +19,7 @@ def main():
     holes = []
     for xpos in range(walls):
         holes.append(Rect(xpos * 10, 100, 10, 400))
+    game_over = False  # 게임오버 변수 선언
 
     while True:
         is_space_down = False
@@ -43,6 +44,13 @@ def main():
 
         del holes[0]
         holes = [x.move(-10, 0) for x in holes]
+
+        # 우주선이 첫번째 구멍을 벗어나는지 검사
+        if holes[0].top > ship_y or \
+                holes[0].bottom < ship_y + 80:
+            game_over = True  # 게임오버로 판정
+
+        print('game_over:', game_over)  # 게임오버인지 확인
 
         SURFACE.fill((0, 255, 0))
 

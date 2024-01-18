@@ -6,7 +6,9 @@ print("숫자 맞추기 게임을 시작 합니다.")
 computer_number = randint(1, 5)
 print(f"[debug]: computer_number is {computer_number}")
 
-while True:
+is_in_game = True  # 게임이 진행중인지 확인 하도록 상태 변수를 선언 합니다.
+
+while is_in_game:  # while 의 조건을 변수로 변경 하여 변수에 따라 게임이 종료 되게 합니다.
     print("computer_number 는 무엇 일까요?")
     player_number = input()
     player_number = int(player_number)
@@ -18,5 +20,6 @@ while True:
     if computer_number == player_number:
         print("축하합니다.")
         print("당신이 이겼습니다.")
+        is_in_game = False  # 게임이 종료될 수 있게 변수값을 바꿉니다.
     else:
         print("틀렸습니다.")

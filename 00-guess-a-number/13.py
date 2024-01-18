@@ -4,7 +4,6 @@ print("안녕하세요 플레이어 ??? 님")
 print("숫자 맞추기 게임을 시작 합니다.")
 
 computer_number = randint(1, 5)
-print(f"[debug]: computer_number is {computer_number}")
 
 is_in_game = True
 score = 100  
@@ -14,9 +13,6 @@ while is_in_game:
     player_number = input()
     player_number = int(player_number)
     print(f"플레이어의 숫자는 {player_number} 입니다.")
-
-    print(f"[debug]: type of computer_number is {type(computer_number)}")
-    print(f"[debug]: type of player_number is {type(player_number)}")
 
     if computer_number == player_number:
         print("축하합니다.")

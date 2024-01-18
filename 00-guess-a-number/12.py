@@ -7,6 +7,7 @@ computer_number = randint(1, 5)
 print(f"[debug]: computer_number is {computer_number}")
 
 is_in_game = True
+score = 100  # 점수를 담을 변수 score 를 선언합니다.
 
 while is_in_game:
     print("computer_number 는 무엇 일까요?")
@@ -23,5 +24,9 @@ while is_in_game:
         is_in_game = False
     elif computer_number < player_number:
         print("그것 보다 작습니다.")
+        score = score - 5  # 틀렸을 경우 5점을 깎습니다.
     else:
         print("그것 보다 큽니다.")
+        score -= 5  # -= 로 간소하게 표현할 수 있습니다.
+
+print(f"점수는 {score} 점 입니다.")  # 마지막으로 점수를 표시하고 프로그램이 끝납니다.

@@ -21,5 +21,7 @@ while is_in_game:
         print("축하합니다.")
         print("당신이 이겼습니다.")
         is_in_game = False
+    elif computer_number < player_number:  # elif(else if) 를 써서 컴퓨터숫자가 더 작을 경우를 안내합니다.
+        print("그것 보다 작습니다.")  # 작을 경우 안내
     else:
-        print("틀렸습니다.")
+        print("그것 보다 큽니다.")  # 클 경우 안내

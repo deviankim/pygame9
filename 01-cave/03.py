@@ -8,6 +8,8 @@ FPSCLOCK = pygame.time.Clock()
 
 
 def main():
+    ship_image = pygame.image.load("ship.png")  # 우주선 이미지를 로딩
+
     while True:
 
         for event in pygame.event.get():
@@ -16,6 +18,8 @@ def main():
                 sys.exit()
 
         SURFACE.fill((0, 255, 0))
+
+        SURFACE.blit(ship_image, (0, 0))  # 우주선 이미지를 화면 데이터의 (x,y)에 그리기
 
         pygame.display.update()
 

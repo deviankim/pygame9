@@ -15,6 +15,7 @@ def main():
     velocity = 0
     score = 0
     slope = randint(1, 6)
+    sysfont = pygame.font.SysFont(None, 36)  # 점수 표시할 폰트 선언
     ship_image = pygame.image.load("ship.png")
     bang_image = pygame.image.load("bang.png")
 
@@ -59,7 +60,9 @@ def main():
             pygame.draw.rect(SURFACE, (0, 0, 0), hole)
 
         SURFACE.blit(ship_image, (0, ship_y))
-        print('score', score)
+        score_image = sysfont.render("score is {}".format(score),
+                                     True, (0, 0, 225))  # 점수값을 이미지로 생성
+        SURFACE.blit(score_image, (600, 20))  # 점수 이미지 SURFACE 에 그리기
 
         if game_over:
             SURFACE.blit(bang_image, (0, ship_y - 40))

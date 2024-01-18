@@ -13,6 +13,7 @@ def main():
     walls = 80
     ship_y = 250
     velocity = 0
+    score = 0  # 점수 변수 선언
     slope = randint(1, 6)
     ship_image = pygame.image.load("ship.png")
     bang_image = pygame.image.load("bang.png")
@@ -33,6 +34,7 @@ def main():
                 is_space_down = True
 
         if not game_over:
+            score += 10  # 점수 누적
             velocity += -3 if is_space_down else 3
             ship_y += velocity
 
@@ -57,6 +59,7 @@ def main():
             pygame.draw.rect(SURFACE, (0, 0, 0), hole)
 
         SURFACE.blit(ship_image, (0, ship_y))
+        print('score', score)  # 콘솔창에 점수 표시
 
         if game_over:
             SURFACE.blit(bang_image, (0, ship_y - 40))

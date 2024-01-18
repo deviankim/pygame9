@@ -9,6 +9,7 @@ print(f"[debug]: computer_number is {computer_number}")
 while True:
     print("computer_number 는 무엇 일까요?")
     player_number = input()
+    player_number = int(player_number)  # str 타입을 int 타입으로 변환 합니다.
     print(f"플레이어의 숫자는 {player_number} 입니다.")
 
     print(f"[debug]: type of computer_number is {type(computer_number)}")

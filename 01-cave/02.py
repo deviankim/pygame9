@@ -23,3 +23,7 @@ def main():
 
 
 main()
+
+# Q1. FPSCLOCK.tick() 을 생략해보세요.
+# Q2. FPSCLOCK.tick() 의 파라메터를 수정하여 fps 를 변경해 보세요.
+# Q3. event 처리 루프를 제거 한다면 어떻게 될까요?

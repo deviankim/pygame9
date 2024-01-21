@@ -37,3 +37,5 @@ def main():
 
 
 main()
+
+# Q1. pygame.key.set_repeat 의 값을 변경해보세요.

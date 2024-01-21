@@ -7,7 +7,10 @@ computer_number = randint(1, 5)
 print("컴퓨터가 생각한 숫자는", computer_number, "입니다")
 
 print("computer_number 는 무엇 일까요?")
+
 player_number = input()
+player_number = int(player_number)
+
 print(f"플레이어의 숫자는 {player_number} 입니다.")
 
 if computer_number == player_number:  # if 문을 사용하여 조건을 검사합니다.

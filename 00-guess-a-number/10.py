@@ -12,7 +12,7 @@ while is_in_game:  # while 의 조건을 변수로 변경 하여 변수에 따�
     print("computer_number 는 무엇 일까요?")
     player_number = input()
     player_number = int(player_number)
-    print(f"플레이어의 숫자는 {player_number} 입니다.")
+    print("플레이어의 숫자는", player_number, "입니다.")
 
     print(f"[debug]: type of computer_number is {type(computer_number)}")
     print(f"[debug]: type of player_number is {type(player_number)}")

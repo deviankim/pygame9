@@ -11,7 +11,7 @@ print("computer_number 는 무엇 일까요?")
 player_number = input()
 player_number = int(player_number)
 
-print(f"플레이어의 숫자는 {player_number} 입니다.")
+print("플레이어의 숫자는", player_number, "입니다.")
 
 if computer_number == player_number:  # if 문을 사용하여 조건을 검사합니다.
     print("축하합니다.")  # 조건이 맞는 경우 (True) 이 블럭을 실행합니다.

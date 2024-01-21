@@ -10,7 +10,7 @@ while True:
     # while 문의 범위를 이곳으로 확장합니다.
     print("computer_number 는 무엇 일까요?")
     player_number = input()
-    print(f"플레이어의 숫자는 {player_number} 입니다.")
+    print("플레이어의 숫자는", player_number, "입니다.")
 
     if computer_number == player_number:
         print("축하합니다.")

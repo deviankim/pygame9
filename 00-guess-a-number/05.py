@@ -6,7 +6,7 @@ print("숫자 맞추기 게임을 시작 합니다.")
 computer_number = randint(1, 5)
 print("컴퓨터가 생각한 숫자는", computer_number, "입니다")
 
-print("computer_number 는 무엇 일까요?")
+print("내가 생각한 숫자는 무엇 일까요?")
 
 player_number = input()
 player_number = int(player_number)

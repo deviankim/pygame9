@@ -39,3 +39,4 @@ def main():
 main()
 
 # Q1. pygame.key.set_repeat 의 값을 변경해보세요.
+# Q2. FPSCLOCK.tick() 의 파라메터를 수정하여 fps 를 변경해 보세요.

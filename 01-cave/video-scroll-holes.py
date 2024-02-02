@@ -73,19 +73,16 @@ def main():
         pygame.draw.rect(SURFACE, color_bg, front)
         update_screen(1)
 
-        count = 0
-        slow_before = 2
         del holes[0]
         for hole in holes:
             pygame.draw.rect(SURFACE, color_yellow, hole)
-            update_screen(5 if count < slow_before else 30)
+            update_screen(5)
             pygame.draw.rect(SURFACE, color_bg, hole)
             hole.move_ip(-hole_width, 0)
             pygame.draw.rect(SURFACE, color_yellow, hole)
-            update_screen(5 if count < slow_before else 30)
+            update_screen(5)
             pygame.draw.rect(SURFACE, color_hole, hole)
-            update_screen(5 if count < slow_before else 30)
-            count += 1
+            update_screen(5)
 
         update_screen(1)
 

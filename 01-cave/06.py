@@ -15,7 +15,7 @@ def main():
     velocity = 0
     ship_image = pygame.image.load("ship.png")
 
-    holes = []  # 구멍 리스트 준비
+    holes = []  # 구멍들 배열 준비
     for xpos in range(walls):  # 변수 xpos 는 0 부터 79 까지 반복 할당 된다.
         holes.append(Rect(xpos * 10, 100, 10, 400))  # 구멍 리스트에 Rect 추가: 오른쪽으로 10씩 이동하면서 배치됨
 

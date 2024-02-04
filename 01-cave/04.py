@@ -32,3 +32,5 @@ def main():
 
 
 main()
+
+# Q1. FPSCLOCK.tick(15) 에서 15 를 다른 숫자로 바꿔 보세요.

@@ -3,7 +3,7 @@ import pygame
 from pygame.locals import QUIT, KEYDOWN, K_SPACE  # KEYDOWN, K_SPACE 상수 가져오기
 
 pygame.init()
-pygame.key.set_repeat(5, 5)  # 키입력 반복을 지정한다. 딜레이와 간격값 입력
+pygame.key.set_repeat(5, 5)  # 키 이벤트를 지속적으로 발생시킨다.
 SURFACE = pygame.display.set_mode((800, 600))
 
 FPSCLOCK = pygame.time.Clock()
@@ -38,5 +38,5 @@ def main():
 
 main()
 
-# Q1. pygame.key.set_repeat 의 값을 변경해보세요.
+# Q1. pygame.key.set_repeat 를 주석처리해보세요. 어떻게 되나요?
 # Q2. FPSCLOCK.tick() 의 파라메터를 수정하여 fps 를 변경해 보세요.

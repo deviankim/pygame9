@@ -18,6 +18,12 @@ FPSCLOCK = pygame.time.Clock()
 
 
 def main():
+    largefont = pygame.font.SysFont(None, 72)  # 큰 폰트 생성
+    message_over = largefont.render("GAME OVER!!",   # 폰트 사용하여 게임 오버 이미지 생성
+                                    True, (0, 255, 225))  # antialias, color
+    message_rect = message_over.get_rect()                # 텍스트의 영역 얻기
+    message_rect.center = (WIDTH * SIZE / 2, HEIGHT * SIZE / 2)  # 텍스트 영역을 화면의 가운데로 지정
+
     game_over = False
 
     field = [[EMPTY for xpos in range(WIDTH)]
@@ -71,6 +77,9 @@ def main():
 
                     pygame.draw.ellipse(SURFACE, (222, 100, 0), rect)
 
+        if game_over:                                           # 만약 게임 오버 라면:
+            SURFACE.blit(message_over, message_rect.topleft)    # 게임 오버 띄어주기
+
         pygame.display.update()
         FPSCLOCK.tick(15)
 
@@ -79,4 +88,9 @@ if __name__ == '__main__':
     main()
 
 '''
+1. **폰트와 텍스트 렌더링**: `pygame.font.SysFont(None, 72)`을 사용해 큰 폰트를 생성하는 과정에서, `None`과 `72`는 각각 무엇을 의미하나요? 이 코드를 사용하여 게임 오버 메시지를 어떻게 시각적으로 표현할 수 있나요?
+
+2. **텍스트 영역과 중앙 정렬**: `message_rect = message_over.get_rect()`와 `message_rect.center = (WIDTH * SIZE / 2, HEIGHT * SIZE / 2)`를 사용하여 텍스트의 영역을 얻고, 화면 가운데로 위치시키는 과정을 설명해주세요.
+
+3. **게임 오버 시 텍스트 표시**: 게임 오버 상태(`game_over = True`)가 되었을 때, `SURFACE.blit(message_over, message_rect.topleft)`를 사용하여 화면에 게임 오버 메시지를 어떻게 표시하나요? `blit` 메소드는 정확히 무엇을 하며, 이 코드가 게임 플레이 경험에 어떤 영향을 미치나요?
 '''

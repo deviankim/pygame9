@@ -17,7 +17,19 @@ SURFACE = pygame.display.set_mode([WIDTH * SIZE, HEIGHT * SIZE])
 FPSCLOCK = pygame.time.Clock()
 
 
+def num_of_bomb(field, x_pos, y_pos):   # field, x_pos, y_pos 를 파라메터로 받는 함수
+    count = 0                           # 반환할 count 를 0으로 초기화
+    for yoffset in range(-1, 2):        # 윗쪽 한칸부터 아래 한칸까지 순회
+        for xoffset in range(-1, 2):    # 좌측 한칸부터 우측 한칸까지 순회
+            xpos, ypos = (x_pos + xoffset, y_pos + yoffset)     # 실제 계산할 절대 인덱스 구하기
+            if 0 <= xpos < WIDTH and 0 <= ypos < HEIGHT and \
+                    field[ypos][xpos] == BOMB:                  # 만약 범위내이면서 폭탄이면:
+                count += 1                                      # count 증가
+    return count                        # count 리턴
+
+
 def main():
+    smallfont = pygame.font.SysFont(None, 36)  # 지뢰 갯수를 출력하기 위한 폰트
     largefont = pygame.font.SysFont(None, 72)
     message_over = largefont.render("GAME OVER!!",
                                     True, (0, 255, 225))
@@ -76,6 +88,12 @@ def main():
                     rect = pygame.Rect(xpos * SIZE, ypos * SIZE, 10, 10)
 
                     pygame.draw.ellipse(SURFACE, (222, 100, 0), rect)
+                else:                                       # 폭탄이 아닌 영역에 숫자 출력한다.
+                    count = num_of_bomb(field, xpos, ypos)  # 폭탄 개수를 함수로 구함
+                    num_image = smallfont.render(           # 폭탄 개수 이미지 생성
+                        "{}".format(count), True, (255, 255, 0))  #
+                    SURFACE.blit(num_image,                 # 개수 그리기
+                                 (xpos * SIZE + 10, ypos * SIZE + 10))  # 그릴 좌표
 
         if game_over:
             SURFACE.blit(message_over, message_rect.topleft)
@@ -88,4 +106,7 @@ if __name__ == '__main__':
     main()
 
 '''
+1. **폭탄 개수 계산 함수**: `num_of_bomb` 함수는 어떤 역할을 하나요? 주어진 위치 `x_pos`, `y_pos` 주변에 있는 폭탄의 개수를 계산하는 과정에서, 왜 `-1`에서 `2` 범위의 `for` 루프를 사용하나요?
+
+2. **폭탄 개수 표시**: 게임 내에서 폭탄이 아닌 타일에 주변 폭탄의 개수를 표시하는 이유는 무엇인가요? 이 기능이 지뢰찾기 게임의 전략적 요소에 어떻게 기여하나요?
 '''

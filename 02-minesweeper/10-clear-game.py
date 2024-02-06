@@ -11,6 +11,7 @@ NUM_OF_BOMBS = 20
 EMPTY = 0
 BOMB = 1
 OPENED = 2
+OPEN_COUNT = 0      # 열린 타일의 개수를 합산하여 게임이 클리어 되었는지 확인하는 용도
 CHECKED = [[0 for _ in range(WIDTH)] for _ in range(HEIGHT)]
 
 pygame.init()
@@ -30,6 +31,7 @@ def num_of_bomb(field, x_pos, y_pos):
 
 
 def open_tile(field, x_pos, y_pos):
+    global OPEN_COUNT                                   # global 변수를 사용하기 위해 반드시 필요하다.
     if CHECKED[y_pos][x_pos]:
         return
 
@@ -41,6 +43,7 @@ def open_tile(field, x_pos, y_pos):
             if 0 <= xpos < WIDTH and 0 <= ypos < HEIGHT and \
                     field[ypos][xpos] == EMPTY:
                 field[ypos][xpos] = OPENED
+                OPEN_COUNT += 1                         # 열린 타일 수 누적
                 count = num_of_bomb(field, xpos, ypos)
                 if count == 0 and \
                         not (xpos == x_pos and ypos == y_pos):
@@ -50,6 +53,8 @@ def open_tile(field, x_pos, y_pos):
 def main():
     smallfont = pygame.font.SysFont(None, 36)
     largefont = pygame.font.SysFont(None, 72)
+    message_clear = largefont.render("!!CLEARED!!",        # 게임 클리어 메시지 준비
+                                     True, (0, 255, 225))  #
     message_over = largefont.render("GAME OVER!!",
                                     True, (0, 255, 225))
     message_rect = message_over.get_rect()
@@ -109,7 +114,9 @@ def main():
             pygame.draw.line(SURFACE, (96, 96, 96),
                              (0, index), (WIDTH * SIZE, index))
 
-        if game_over:
+        if OPEN_COUNT == WIDTH * HEIGHT - NUM_OF_BOMBS:         # 열 수 있는 타일이 모두 열렸다면:
+            SURFACE.blit(message_clear, message_rect.topleft)   # "!!CLEARED!!" 출력
+        elif game_over:                                         # elif 조건 처리
             SURFACE.blit(message_over, message_rect.topleft)
 
         pygame.display.update()
@@ -121,5 +128,10 @@ if __name__ == '__main__':
 
 '''
 
+1. **OPEN_COUNT의 역할**: `OPEN_COUNT` 변수는 코드 내에서 어떤 역할을 합니다? 이 변수를 사용하여 게임의 어떤 상태를 결정하나요?
+
+2. **함수와 글로벌 변수**: `open_tile` 함수에서 `OPEN_COUNT` 글로벌 변수를 사용하는 이유는 무엇인가요? 재귀 호출 과정에서 이 변수를 어떻게 활용하며, 왜 함수 내에서 글로벌 변수를 사용해야 하는 상황이 발생하나요?
+
+3. **게임 클리어 조건**: 게임이 클리어되었을 때 출력되는 메시지를 결정하는 로직은 어떻게 작동하나요? `if OPEN_COUNT == WIDTH * HEIGHT - NUM_OF_BOMBS:` 조건문이 의미하는 바는 무엇이며, 이 조건이 충족되었을 때 사용자에게 어떤 피드백을 제공하나요?
 
 '''

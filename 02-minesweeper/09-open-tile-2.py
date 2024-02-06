@@ -34,7 +34,18 @@ def open_tile(field, x_pos, y_pos):
         return
 
     CHECKED[y_pos][x_pos] = True
-    field[y_pos][x_pos] = OPENED
+    # field[ypos][xpos] = OPENED  # 이제 여기서 마킹하지 않고 for loop 에서 처리해야 한다.
+
+    for yoffset in range(-1, 2):                                # y좌표 [-1, 0, +1]
+        for xoffset in range(-1, 2):                            # x좌표 [-1, 0, +1]
+            xpos, ypos = (x_pos + xoffset, y_pos + yoffset)     # 실제 검사할 좌표
+            if 0 <= xpos < WIDTH and 0 <= ypos < HEIGHT and \
+                    field[ypos][xpos] == EMPTY:                 # 좌표 범위가 화면내 and EMPTY:
+                field[ypos][xpos] = OPENED                      # OPENED 로 마킹
+                count = num_of_bomb(field, xpos, ypos)          # 주변 폭탄 개수 구하기
+                if count == 0 and \
+                        not (xpos == x_pos and ypos == y_pos):  # 주변에 폭탄이 없고, 좌표가 기준점이 아니라면:
+                    open_tile(field, xpos, ypos)                # open_tile 또 열기(재귀)
 
 
 def main():
@@ -110,4 +121,9 @@ if __name__ == '__main__':
     main()
 
 '''
+
+1. **재귀 함수 사용 이유**: `open_tile` 함수 내에서 재귀 호출을 사용하는 이유는 무엇인가요? 주변 타일을 자동으로 열기 위한 조건(`if count == 0 and not (xpos == x_pos and ypos == y_pos)`)은 어떤 상황을 처리하기 위해 필요한가요?
+
+2. **타일 상태 업데이트 로직**: `open_tile` 함수에서 `CHECKED` 배열과 `field` 배열의 상태를 변경하는 로직은 어떤 목적으로 작성되었나요? `CHECKED` 배열이 왜 필요하며, 게임의 어떤 기능을 지원하나요?
+
 '''

@@ -15,7 +15,7 @@ def main():
     velocity = 0
     score = 0
     slope = randint(1, 6)
-    sysfont = pygame.font.SysFont(None, 36)  # 점수 표시할 폰트 선언
+    sysfont = pygame.font.SysFont(None, 36)  ###
     ship_image = pygame.image.load("ship.png")
     bang_image = pygame.image.load("bang.png")
 
@@ -61,8 +61,8 @@ def main():
 
         SURFACE.blit(ship_image, (0, ship_y))
         score_image = sysfont.render("score is {}".format(score),
-                                     True, (0, 0, 225))  # 점수값을 이미지로 생성
-        SURFACE.blit(score_image, (600, 20))  # 점수 이미지 SURFACE 에 그리기
+                                     True, (0, 0, 225))    ###
+        SURFACE.blit(score_image, (600, 20))                        ###
 
         if game_over:
             SURFACE.blit(bang_image, (0, ship_y - 40))
@@ -73,3 +73,17 @@ def main():
 
 
 main()
+
+
+'''
+
+1. **폰트 설정과 사용**: `sysfont = pygame.font.SysFont(None, 36)` 구문은 프로그램 내에서 어떤 역할을 합니다? `None`과 `36`은 각각 어떤 의미를 가지며, 이 폰트 설정은 게임 내의 텍스트 표시에 어떻게 사용되나요?
+
+2. **점수 표시 로직**: `score_image = sysfont.render("score is {}".format(score), True, (0, 0, 225))` 구문은 어떤 작업을 수행하나요? 이 코드에서 `True`와 `(0, 0, 225)`는 각각 어떤 파라미터를 의미하며, `score` 변수의 값을 문자열로 어떻게 표현하고 있나요?
+
+3. **점수 위치 설정**: `SURFACE.blit(score_image, (600, 20))`에서 `(600, 20)`은 점수가 화면에 표시되는 위치를 결정합니다. 이 좌표값은 화면의 어느 부분을 가리키며, 점수를 이 위치에 표시하는 것이 사용자 경험 측면에서 어떤 이점이 있나요?
+
+4. **게임 UI 디자인**: 게임 화면에 점수를 표시하는 것이 게임 플레이어에게 어떤 영향을 미칠 수 있나요? 게임 내에서 점수와 같은 정보를 시각적으로 표현하는 것이 중요한 이유는 무엇인가요?
+
+폰트 설정 및 텍스트 렌더링 방법, 게임 내 정보 표시의 중요성, 그리고 사용자 인터페이스(UI) 디자인의 기본 원리를 이해하는 데 도움을 줍니다. 또한, 게임 플레이어에게 명확하고 유익한 피드백을 제공하는 방법에 대한 인사이트를 제공할 수 있습니다.
+'''

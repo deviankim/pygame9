@@ -14,7 +14,7 @@ def main():
     game_over = False
     score = 0
     speed = 25
-    stars = []
+    rocks = []
     keymap = []
     ship = [0, 0]
     scope_image = pygame.image.load("scope.png")
@@ -27,8 +27,8 @@ def main():
     message_rect = message_over.get_rect()
     message_rect.center = (400, 400)
 
-    while len(stars) < 200:
-        stars.append({
+    while len(rocks) < 200:
+        rocks.append({
             "pos": [randint(-1600, 1600),
                     randint(-1600, 1600), randint(0, 4095)],
             "theta": randint(0, 360)
@@ -63,26 +63,26 @@ def main():
             ship[0] = max(-800, min(800, ship[0]))
             ship[1] = max(-800, min(800, ship[1]))
 
-            for star in stars:
-                star["pos"][2] -= speed
-                if star["pos"][2] < 64:
-                    if abs(star["pos"][0] - ship[0]) < 50 and \
-                        abs(star["pos"][1] - ship[1]) < 50:
+            for rock in rocks:
+                rock["pos"][2] -= speed
+                if rock["pos"][2] < 64:
+                    if abs(rock["pos"][0] - ship[0]) < 50 and \
+                        abs(rock["pos"][1] - ship[1]) < 50:
                         game_over = True
-                    star["pos"] = [randint(-1600, 1600),
+                    rock["pos"] = [randint(-1600, 1600),
                                    randint(-1600, 1600), 4095]
 
         # 그리기
         SURFACE.fill((0, 0, 0))
-        stars = sorted(stars, key=lambda x: x["pos"][2],
+        rocks = sorted(rocks, key=lambda x: x["pos"][2],
                        reverse=True)
-        for star in stars:
-            zpos = star["pos"][2]
-            xpos = ((star["pos"][0] - ship[0]) << 9) / zpos + 400
-            ypos = ((star["pos"][1] - ship[1]) << 9) / zpos + 400
+        for rock in rocks:
+            zpos = rock["pos"][2]
+            xpos = ((rock["pos"][0] - ship[0]) << 9) / zpos + 400
+            ypos = ((rock["pos"][1] - ship[1]) << 9) / zpos + 400
             size = (50 << 9) / zpos
             rotated = pygame.transform.rotozoom(rock_image,
-                                    star["theta"], size / 145)
+                                    rock["theta"], size / 145)
             SURFACE.blit(rotated, (xpos, ypos))
 
         SURFACE.blit(scope_image, (0, 0))

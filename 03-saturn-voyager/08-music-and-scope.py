@@ -15,7 +15,7 @@ def main():
     speed = 25
     rocks = []
     keymap = []
-    ship = [0, 0]
+    ship = [0, 0]                           ##############
     scope_image = pygame.image.load("scope.png")
     rock_image = pygame.image.load("rock.png")
 
@@ -25,8 +25,8 @@ def main():
     message_rect = message_over.get_rect()
     message_rect.center = (400, 400)
 
-    pygame.mixer.music.load("Escape.mp3")
-    pygame.mixer.music.play()
+    pygame.mixer.music.load("Escape.mp3")   ##############
+    pygame.mixer.music.play()               ##############
 
     while len(rocks) < 200:
         rocks.append({
@@ -81,11 +81,11 @@ def main():
             rotated = pygame.transform.rotozoom(rock_image, rock["theta"], size / 145)
             SURFACE.blit(rotated, (xpos, ypos))
 
-        SURFACE.blit(scope_image, (0, 0))
+        SURFACE.blit(scope_image, (0, 0))   ##############
 
         if game_over:
             SURFACE.blit(message_over, message_rect)
-            pygame.mixer.music.stop()
+            pygame.mixer.music.stop()       ##############
 
         score_str = str(score).zfill(6)
         score_image = scorefont.render(score_str, True, (0, 255, 0))
@@ -97,3 +97,22 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+'''
+
+1. **멀티미디어 통합**: `pygame.mixer.music.load("Escape.mp3")`와 `pygame.mixer.music.play()`를 사용하여 게임에 배경음악을 추가하는 과정은 어떻게 진행되나요? 게임의 몰입감과 사용자 경험에 음악이 어떤 영향을 미치나요?
+
+2. **게임 오버 시 음악 처리**: 게임 오버가 되었을 때 `pygame.mixer.music.stop()` 함수를 호출하는 이유는 무엇인가요? 게임의 다양한 상태(예: 게임 진행 중, 게임 오버)에 따라 오디오 출력을 어떻게 관리해야 하며, 이는 사용자에게 어떤 신호를 제공하나요?
+
+3. **시각적 요소의 추가**: `scope_image`를 화면에 표시하는 과정(`SURFACE.blit(scope_image, (0, 0))`)은 게임의 시각적 구성에 어떤 새로운 요소를 추가하나요? 이러한 시각적 요소가 게임의 테마나 분위기에 어떤 기여를 하며, 게임 디자인에서 시각적 요소의 중요성은 무엇인가요?
+
+4. **키 입력과 캐릭터 움직임**: `KEYDOWN`과 `KEYUP` 이벤트를 사용하여 `keymap` 리스트를 업데이트하고, 이를 기반으로 우주선(또는 캐릭터)의 움직임을 제어하는 방식은 어떤 장점을 가지나요? 동적인 게임 환경에서 사용자 입력을 처리하는 다양한 방법에는 어떤 것들이 있을까요?
+
+5. **동시 키입력 처리**: 키조합 (오른방향키와 아랫방향키 혹은 왼방향키와 아랫방향키)을 허용하려면 코드를 어떻게 수정해야 할까요?
+
+
+6. **이동 좌표 제한**: 우주선의 (x, y)좌표를 -800 에서 800 사이에만 있도록 제한하려면 어떻게 해야 할까요?  
+
+오디오 및 시각적 요소의 통합, 사용자 입력의 처리, 게임 상태에 따른 적절한 피드백 제공의 중요성을 이해하는 데 도움을 줍니다. 또한, 게임 디자인에서 사용자 경험을 향상시키는 다양한 방법을 탐색하도록 격려합니다.
+'''

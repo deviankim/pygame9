@@ -24,6 +24,9 @@ def main():
     message_rect = message_over.get_rect()
     message_rect.center = (400, 400)
 
+    pygame.mixer.music.load("Escape.mp3")
+    pygame.mixer.music.play()
+
     while len(rocks) < 200:
         rocks.append({
             "pos": [randint(-1600, 1600),
@@ -79,6 +82,7 @@ def main():
 
         if game_over:
             SURFACE.blit(message_over, message_rect)
+            pygame.mixer.music.stop()
 
         score_str = str(score).zfill(6)
         score_image = scorefont.render(score_str, True, (0, 255, 0))
@@ -90,4 +94,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

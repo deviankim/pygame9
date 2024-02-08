@@ -25,6 +25,9 @@ def main():
     message_rect = message_over.get_rect()
     message_rect.center = (800 / 2, 800 / 2)
 
+    pygame.mixer.music.load("Escape.mp3")
+    pygame.mixer.music.play()
+
     while len(rocks) < 200:
         rocks.append({
             "pos": [randint(-1600, 1600), randint(-1600, 1600), randint(0, 4095)],

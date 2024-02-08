@@ -16,6 +16,7 @@ def main():
     rocks = []
     keymap = []
     ship = [0, 0]
+    scope_image = pygame.image.load("scope.png")
     rock_image = pygame.image.load("rock.png")
 
     scorefont = pygame.font.SysFont(None, 36)
@@ -79,6 +80,8 @@ def main():
             size = (50 << 9) / zpos
             rotated = pygame.transform.rotozoom(rock_image, rock["theta"], size / 145)
             SURFACE.blit(rotated, (xpos, ypos))
+
+        SURFACE.blit(scope_image, (0, 0))
 
         if game_over:
             SURFACE.blit(message_over, message_rect)

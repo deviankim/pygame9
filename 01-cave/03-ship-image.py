@@ -12,11 +12,15 @@ def main():
 
     while True:
 
+        '''InputEvent'''
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
 
+        '''Update'''
+
+        '''Rendering'''
         SURFACE.fill((0, 255, 0))
 
         SURFACE.blit(ship_image, (0, 0))  ######

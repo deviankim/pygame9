@@ -17,6 +17,7 @@ def main():
     while True:
         is_space_down = False                                       ###
 
+        '''InputEvent'''
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -24,9 +25,11 @@ def main():
             elif event.type == KEYDOWN and event.key == K_SPACE:    ###
                 is_space_down = True
 
+        '''Update'''
         velocity += -3 if is_space_down else 3                      ###
         ship_y += velocity
 
+        '''Rendering'''
         SURFACE.fill((0, 255, 0))
 
         SURFACE.blit(ship_image, (0, ship_y))

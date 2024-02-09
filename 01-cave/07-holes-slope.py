@@ -23,6 +23,7 @@ def main():
     while True:
         is_space_down = False
 
+        '''InputEvent'''
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -30,6 +31,7 @@ def main():
             elif event.type == KEYDOWN and event.key == K_SPACE:
                 is_space_down = True
 
+        '''Update'''
         velocity += -3 if is_space_down else 3
         ship_y += velocity
 
@@ -41,6 +43,7 @@ def main():
         del holes[0]                                ###
         holes = [x.move(-10, 0) for x in holes]     ###
 
+        '''Rendering'''
         SURFACE.fill((0, 255, 0))
 
         for hole in holes:

@@ -43,6 +43,7 @@ def main():
             test = edge.move(0, slope)
             if test.top <= 0 or test.bottom >= 600:
                 slope = randint(1, 6) * (-1 if slope > 0 else 1)
+                edge.inflate_ip(0, -20)
 
             edge.move_ip(10, slope)
             holes.append(edge)
@@ -60,9 +61,8 @@ def main():
             pygame.draw.rect(SURFACE, (0, 0, 0), hole)
 
         SURFACE.blit(ship_image, (0, ship_y))
-        score_image = sysfont.render("score is {}".format(score),
-                                     True, (0, 0, 225))    ###
-        SURFACE.blit(score_image, (600, 20))                        ###
+        score_image = sysfont.render("score is {}".format(score), True, (0, 0, 225))    ###
+        SURFACE.blit(score_image, (600, 20))                                            ###
 
         if game_over:
             SURFACE.blit(bang_image, (0, ship_y - 40))
@@ -84,6 +84,12 @@ main()
 3. **점수 위치 설정**: `SURFACE.blit(score_image, (600, 20))`에서 `(600, 20)`은 점수가 화면에 표시되는 위치를 결정합니다. 이 좌표값은 화면의 어느 부분을 가리키며, 점수를 이 위치에 표시하는 것이 사용자 경험 측면에서 어떤 이점이 있나요?
 
 4. **게임 UI 디자인**: 게임 화면에 점수를 표시하는 것이 게임 플레이어에게 어떤 영향을 미칠 수 있나요? 게임 내에서 점수와 같은 정보를 시각적으로 표현하는 것이 중요한 이유는 무엇인가요?
+
+5. 게임을 하드모드를 만들어 봅시다.
+
+6. 우주선 영역만큼 사각형을 그려봅시다. 그리고 무엇을 발견했나요?
+
+7. 우주선 바닥 좌표를 정확하게 계산하려면 어떻게 해야 할까요?
 
 폰트 설정 및 텍스트 렌더링 방법, 게임 내 정보 표시의 중요성, 그리고 사용자 인터페이스(UI) 디자인의 기본 원리를 이해하는 데 도움을 줍니다. 또한, 게임 플레이어에게 명확하고 유익한 피드백을 제공하는 방법에 대한 인사이트를 제공할 수 있습니다.
 '''

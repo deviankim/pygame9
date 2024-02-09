@@ -10,21 +10,21 @@ FPSCLOCK = pygame.time.Clock()
 
 
 def main():
-    ship_y = 250  ###
+    ship_y = 250                                                    ###
     velocity = 0
     ship_image = pygame.image.load("ship.png")
 
     while True:
-        is_space_down = False  ###
+        is_space_down = False                                       ###
 
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == KEYDOWN and event.key == K_SPACE:  ###
+            elif event.type == KEYDOWN and event.key == K_SPACE:    ###
                 is_space_down = True
 
-        velocity += -3 if is_space_down else 3  ###
+        velocity += -3 if is_space_down else 3                      ###
         ship_y += velocity
 
         SURFACE.fill((0, 255, 0))

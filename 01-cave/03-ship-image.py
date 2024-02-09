@@ -8,7 +8,7 @@ FPSCLOCK = pygame.time.Clock()
 
 
 def main():
-    ship_image = pygame.image.load("ship.png")  ###
+    ship_image = pygame.image.load("ship.png")  ######
 
     while True:
 
@@ -19,7 +19,7 @@ def main():
 
         SURFACE.fill((0, 255, 0))
 
-        SURFACE.blit(ship_image, (0, 0))  ###
+        SURFACE.blit(ship_image, (0, 0))  ######
 
         pygame.display.update()
 

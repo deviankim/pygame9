@@ -10,14 +10,14 @@ FPSCLOCK = pygame.time.Clock()
 
 
 def main():
-    walls = 80  ###
+    walls = 80                                              ###
     ship_y = 250
     velocity = 0
     ship_image = pygame.image.load("ship.png")
 
     holes = []                                              ###
     for xpos in range(walls):                               ###
-        holes.append(Rect(xpos * 10, 100, 10, 400))   ###
+        holes.append(Rect(xpos * 10, 100, 10, 400))     ###
 
     while True:
         is_space_down = False
@@ -34,7 +34,7 @@ def main():
 
         SURFACE.fill((0, 255, 0))
 
-        for hole in holes:                                    ###
+        for hole in holes:                                  ###
             pygame.draw.rect(SURFACE, (0, 0, 0), hole)  ###
 
         SURFACE.blit(ship_image, (0, ship_y))

@@ -1,5 +1,5 @@
 import sys
-from random import randint  ##########################
+from random import randint
 import pygame
 from pygame.locals import QUIT, KEYDOWN, K_SPACE, Rect
 
@@ -13,7 +13,7 @@ def main():
     walls = 80
     ship_y = 250
     velocity = 0
-    slope = randint(1, 6)  ##########################
+    slope = randint(1, 6)
     ship_image = pygame.image.load("ship.png")
 
     holes = []
@@ -33,13 +33,16 @@ def main():
         velocity += -3 if is_space_down else 3
         ship_y += velocity
 
-        edge = holes[-1].copy()                     ###
+        edge = holes[-1].copy()
+        test = edge.move(0, slope)                                  ###
+        if test.top <= 0 or test.bottom >= 600:                     ###
+            slope = randint(1, 6) * (-1 if slope > 0 else 1)    ###
 
-        edge.move_ip(10, slope)                     ###
-        holes.append(edge)                          ###
+        edge.move_ip(10, slope)
+        holes.append(edge)
 
-        del holes[0]                                ###
-        holes = [x.move(-10, 0) for x in holes]     ###
+        del holes[0]
+        holes = [x.move(-10, 0) for x in holes]
 
         SURFACE.fill((0, 255, 0))
 

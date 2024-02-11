@@ -2,7 +2,7 @@ import sys
 import math
 import random
 import pygame
-from pygame.locals import QUIT, KEYDOWN, K_LEFT, K_a, K_RIGHT, K_d, Rect
+from pygame.locals import QUIT, KEYDOWN, K_LEFT, K_RIGHT, Rect
 
 
 class Block:
@@ -30,26 +30,22 @@ def tick():
             pygame.quit()
             sys.exit()
         elif event.type == KEYDOWN:
-            if event.key in [K_LEFT, K_a]:
+            if event.key == K_LEFT:
                 PADDLE.rect.centerx -= 10
-            elif event.key in [K_RIGHT, K_d]:
+            elif event.key == K_RIGHT:
                 PADDLE.rect.centerx += 10
-
     if BALL.rect.centery < 1000:
         BALL.move()
 
-    # 블록과 충돌?
     prevlen = len(BLOCKS)
     BLOCKS = [x for x in BLOCKS
               if not x.rect.colliderect(BALL.rect)]
     if len(BLOCKS) != prevlen:
         BALL.dir *= -1
 
-    # 패들과 충돌?
     if PADDLE.rect.colliderect(BALL.rect):
-        BALL.dir = 90 * (PADDLE.rect.centerx - BALL.rect.centerx) / PADDLE.rect.width * 80
+        BALL.dir = 90 + (PADDLE.rect.centerx - BALL.rect.centerx) / PADDLE.rect.width * 80
 
-    # 벽과 충돌?
     if BALL.rect.centerx < 0 or BALL.rect.centerx > 600:
         BALL.dir = 180 - BALL.dir
     if BALL.rect.centery < 0:
@@ -68,15 +64,15 @@ BALL = Block((242, 242, 0), Rect(300, 400, 20, 20), 10)
 
 def main():
     myfont = pygame.font.SysFont(None, 80)
-    mess_clear = myfont.render("Cleared", True, (255, 255, 0))
+    mess_clear = myfont.render("Cleared!", True, (255, 255, 0))
     mess_over = myfont.render("Game Over!", True, (255, 255, 0))
     fps = 30
-    colors = [(255, 0, 0), (255, 165, 0), (242, 242, 0), (0, 128, 0), (128, 0, 128), (0, 0, 250)]
+    colors = [(255, 0, 0), (255, 165, 0), (242, 242, 0),
+              (0, 128, 0), (128, 0, 128), (0, 0, 250)]
 
-    for ypos, color in enumerate(colors, start = 0):
+    for ypos, color in enumerate(colors, start=0):
         for xpos in range(0, 5):
-            BLOCKS.append(Block(color, Rect(xpos * 100 + 60, ypos * 50+40, 80, 30)))
-
+            BLOCKS.append(Block(color, Rect(xpos * 100 + 60, ypos * 50 + 40, 80, 30)))
 
     while True:
         tick()
@@ -89,7 +85,6 @@ def main():
 
         if len(BLOCKS) == 0:
             SURFACE.blit(mess_clear, (200, 400))
-
         if BALL.rect.centery > 800 and len(BLOCKS) > 0:
             SURFACE.blit(mess_over, (150, 400))
 

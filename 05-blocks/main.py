@@ -6,8 +6,8 @@ from pygame.locals import QUIT, KEYDOWN, K_LEFT, K_RIGHT, Rect
 
 
 class Block:
-    def __init__(self, col, rect, speed=0):
-        self.col = col
+    def __init__(self, color, rect, speed=0):
+        self.color = color
         self.rect = rect
         self.speed = speed
         self.dir = random.randint(-45, 45) + 270
@@ -18,12 +18,12 @@ class Block:
 
     def draw(self):
         if self.speed == 0:
-            pygame.draw.rect(SURFACE, self.col, self.rect)
+            pygame.draw.rect(SURFACE, self.color, self.rect)
         else:
-            pygame.draw.ellipse(SURFACE, self.col, self.rect)
+            pygame.draw.ellipse(SURFACE, self.color, self.rect)
 
 
-def tick():
+def update():
     global BLOCKS
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -37,10 +37,10 @@ def tick():
     if BALL.rect.centery < 1000:
         BALL.move()
 
-    prevlen = len(BLOCKS)
+    prev_len = len(BLOCKS)
     BLOCKS = [x for x in BLOCKS
               if not x.rect.colliderect(BALL.rect)]
-    if len(BLOCKS) != prevlen:
+    if len(BLOCKS) != prev_len:
         BALL.dir *= -1
 
     if PADDLE.rect.colliderect(BALL.rect):
@@ -75,7 +75,7 @@ def main():
             BLOCKS.append(Block(color, Rect(xpos * 100 + 60, ypos * 50 + 40, 80, 30)))
 
     while True:
-        tick()
+        update()
 
         SURFACE.fill((0, 0, 0))
         BALL.draw()

@@ -1,3 +1,5 @@
+import math     ######
+import random   ######
 import sys
 
 import pygame
@@ -5,12 +7,21 @@ from pygame.locals import QUIT, Rect, KEYDOWN, K_LEFT, K_RIGHT
 
 
 class Block:
-    def __init__(self, color, rect):
+    def __init__(self, color, rect, speed=0):           ######
         self.color = color
         self.rect = rect
+        self.speed = speed                              ######
+        self.dir = random.randint(-45, 45) + 270        ######
+
+    def move(self):                                                         #
+        self.rect.centerx += math.cos(math.radians(self.dir)) * self.speed  #
+        self.rect.centery -= math.sin(math.radians(self.dir)) * self.speed  #
 
     def draw(self):
-        pygame.draw.rect(SURFACE, self.color, self.rect)
+        if self.speed == 0:                                         #
+            pygame.draw.rect(SURFACE, self.color, self.rect)        #
+        else:                                                       #
+            pygame.draw.ellipse(SURFACE, self.color, self.rect)     #
 
 
 pygame.init()
@@ -19,6 +30,7 @@ SURFACE = pygame.display.set_mode((600, 800))
 FPSCLOCK = pygame.time.Clock()
 BLOCKS = []
 PADDLE = Block((242, 242, 0), Rect(300, 700, 100, 30))
+BALL = Block((242, 242, 0), Rect(300, 400, 20, 20), 10)     ######
 
 
 def main():
@@ -39,8 +51,11 @@ def main():
                     PADDLE.rect.centerx -= 10
                 elif event.key == K_RIGHT:
                     PADDLE.rect.centerx += 10
+        if BALL.rect.centery < 1000:                        ######
+            BALL.move()                                     ######
 
         SURFACE.fill((0, 0, 0))
+        BALL.draw()                                         ######
         PADDLE.draw()
         for block in BLOCKS:
             block.draw()

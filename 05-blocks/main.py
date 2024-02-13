@@ -64,8 +64,8 @@ BALL = Block((242, 242, 0), Rect(300, 400, 20, 20), 10)
 
 def main():
     myfont = pygame.font.SysFont(None, 80)
-    mess_clear = myfont.render("Cleared!", True, (255, 255, 0))
-    mess_over = myfont.render("Game Over!", True, (255, 255, 0))
+    message_clear = myfont.render("Cleared!", True, (255, 255, 0))
+    message_over = myfont.render("Game Over!", True, (255, 255, 0))
     fps = 30
     colors = [(255, 0, 0), (255, 165, 0), (242, 242, 0),
               (0, 128, 0), (128, 0, 128), (0, 0, 250)]
@@ -84,9 +84,9 @@ def main():
             block.draw()
 
         if len(BLOCKS) == 0:
-            SURFACE.blit(mess_clear, (200, 400))
+            SURFACE.blit(message_clear, (200, 400))
         if BALL.rect.centery > 800 and len(BLOCKS) > 0:
-            SURFACE.blit(mess_over, (150, 400))
+            SURFACE.blit(message_over, (150, 400))
 
         pygame.display.update()
         FPSCLOCK.tick(fps)

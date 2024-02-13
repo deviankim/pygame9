@@ -2,12 +2,12 @@ import sys
 from math import radians, sin, cos
 from random import randint
 import pygame
-from pygame.locals import Rect, QUIT, KEYDOWN, KEYUP, K_SPACE, K_LEFT, K_a, K_RIGHT, K_d, K_UP, K_w, K_DOWN, K_s
+from pygame.locals import Rect, QUIT, KEYDOWN, KEYUP, K_SPACE, K_LEFT, K_RIGHT, K_UP, K_DOWN
 
 pygame.init()
 pygame.key.set_repeat(5, 5)
-surface = pygame.display.set_mode((800, 800))
-fpsclock = pygame.time.Clock()
+SURFACE = pygame.display.set_mode((800, 800))
+FPSCLOCK = pygame.time.Clock()
 
 
 class Drawable:
@@ -31,13 +31,13 @@ class Rock(Drawable):
         self.size = size
         self.power = 128 / size
         self.step[0] = cos(radians(self.theta)) * self.power
-        self.step[1] = sin(radians(self.theta)) * self.power * -1
+        self.step[1] = sin(radians(self.theta)) * -self.power
 
     def draw(self):
         rotated = pygame.transform.rotozoom(self.image, self.theta, self.size / 64)
         rect = rotated.get_rect()
         rect.center = self.rect.center
-        surface.blit(rotated, rect)
+        SURFACE.blit(rotated, rect)
 
     def tick(self):
         self.theta += 3
@@ -53,7 +53,7 @@ class Shot(Drawable):
 
     def draw(self):
         if self.count < self.max_count:
-            pygame.draw.rect(surface, (225, 225, 0), self.rect)
+            pygame.draw.rect(SURFACE, (225, 225, 0), self.rect)
 
     def tick(self):
         self.count += 1
@@ -74,16 +74,16 @@ class Ship(Drawable):
         rotated = pygame.transform.rotate(self.image, self.theta)
         rect = rotated.get_rect()
         rect.center = self.rect.center
-        surface.blit(rotated, rect)
+        SURFACE.blit(rotated, rect)
         if self.explode:
-            surface.blit(self.bang, rect)
+            SURFACE.blit(self.bang, rect)
 
     def tick(self):
         self.power += self.accel
         self.power *= 0.94
         self.accel *= 0.94
         self.step[0] = cos(radians(self.theta)) * self.power
-        self.step[1] = sin(radians(self.theta)) * self.power * -1
+        self.step[1] = sin(radians(self.theta)) * -self.power
         self.move()
 
 
@@ -98,21 +98,23 @@ def key_event_handler(keymap, ship):
         elif event.type == KEYUP:
             keymap.remove(event.key)
 
-    if K_LEFT in keymap or K_a in keymap:
+    if K_LEFT in keymap:
         ship.theta += 5
-    elif K_RIGHT in keymap or K_d in keymap:
+    elif K_RIGHT in keymap:
         ship.theta -= 5
-    elif K_UP in keymap or K_w in keymap:
+    elif K_UP in keymap:
         ship.accel = min(5, ship.accel + 0.2)
-    elif K_DOWN in keymap or K_s in keymap:
+    elif K_DOWN in keymap:
         ship.accel = max(-5, ship.accel - 0.1)
 
 
 def main():
     sysfont = pygame.font.SysFont(None, 72)
     scorefont = pygame.font.SysFont(None, 36)
-    message_clear = sysfont.render("!! CLEARED !!", True, (0, 255, 255))
-    message_over = sysfont.render("GAME OVER", True, (0, 255, 255))
+    message_clear = sysfont.render("!!CLEARED!!",
+                                   True, (0, 255, 225))
+    message_over = sysfont.render("GAME OVER!!",
+                                  True, (0, 255, 225))
     message_rect = message_clear.get_rect()
     message_rect.center = (400, 400)
 
@@ -141,14 +143,12 @@ def main():
         if not game_over:
             ship.tick()
 
-            # 운석을 이동
             for rock in rocks:
                 rock.tick()
                 if rock.rect.colliderect(ship.rect):
                     ship.explode = True
                     game_over = True
 
-            # 총알을 이동
             fire = False
             for shot in shots:
                 if shot.count < shot.max_count:
@@ -165,7 +165,6 @@ def main():
                         if hit.rect.width > 16:
                             rocks.append(Rock(hit.rect.center, hit.rect.width / 2))
                             rocks.append(Rock(hit.rect.center, hit.rect.width / 2))
-
                         if len(rocks) == 0:
                             game_over = True
 
@@ -177,35 +176,29 @@ def main():
                     shot.step = (shot_x, shot_y)
                     fire = True
 
-        # render background
         back_x = (back_x + ship.step[0] / 2) % 1600
         back_y = (back_y + ship.step[1] / 2) % 1600
+        SURFACE.fill((0, 0, 0))
+        SURFACE.blit(back_image, (-back_x, -back_y), (0, 0, 3200, 3200))
 
-        surface.fill((0, 0, 0))
-        surface.blit(back_image, (-back_x, -back_y), (0, 0, 3200, 3200))
-
-        # render objects
         ship.draw()
-
         for shot in shots:
             shot.draw()
-
         for rock in rocks:
             rock.draw()
 
         score_str = str(score).zfill(6)
         score_image = scorefont.render(score_str, True, (0, 255, 0))
-        surface.blit(score_image, (700, 10))
+        SURFACE.blit(score_image, (700, 10))
 
-        # render message
         if game_over:
             if len(rocks) == 0:
-                surface.blit(message_clear, message_rect.topleft)
+                SURFACE.blit(message_clear, message_rect.topleft)
             else:
-                surface.blit(message_over, message_rect.topleft)
+                SURFACE.blit(message_over, message_rect.topleft)
 
         pygame.display.update()
-        fpsclock.tick(20)
+        FPSCLOCK.tick(20)
 
 
 if __name__ == '__main__':

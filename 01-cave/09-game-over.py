@@ -53,7 +53,7 @@ def main():
                 holes[0].bottom < ship_y + 80:
             game_over = True  ########################################
         # 게임오버인지 확인하려면 아래 코드를 넣어 보세요.
-        # print('game_over:', game_over)
+        print('game_over:', game_over)
         ##############################################################
 
         '''Rendering'''

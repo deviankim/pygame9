@@ -1,6 +1,6 @@
 import sys
 import pygame
-from pygame.locals import QUIT
+from pygame.locals import QUIT, KEYDOWN, KEYUP, K_SPACE
 
 pygame.init()
 SURFACE = pygame.display.set_mode((800, 600))
@@ -8,7 +8,8 @@ FPSCLOCK = pygame.time.Clock()
 
 
 def main():
-    ship_y = 0                                      ###
+    ship_y = 250
+    move_y = 3
     velocity = 0                                    ###
     ship_image = pygame.image.load("ship.png")
 
@@ -19,19 +20,20 @@ def main():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-
+            elif event.type in [KEYDOWN, KEYUP] and event.key == K_SPACE:
+                move_y = -3 if event.type == KEYDOWN else 3
         '''Update'''
-        velocity += 3                               ###
+        velocity += move_y                          ###
         ship_y += velocity                          ###
 
         '''Rendering'''
         SURFACE.fill((0, 255, 0))
 
-        SURFACE.blit(ship_image, (0, ship_y))   ###
+        SURFACE.blit(ship_image, (0, ship_y))
 
         pygame.display.update()
 
-        FPSCLOCK.tick(15)
+        FPSCLOCK.tick(20)
 
 
 main()

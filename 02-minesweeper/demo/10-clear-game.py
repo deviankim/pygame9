@@ -11,8 +11,7 @@ NUM_OF_BOMBS = 20
 EMPTY = 0
 BOMB = 1
 OPENED = 2
-OPEN_COUNT = 0      #######################################################
-CHECKED = [[0 for _ in range(WIDTH)] for _ in range(HEIGHT)]
+OPEN_COUNT = 0  #######################################################
 
 pygame.init()
 SURFACE = pygame.display.set_mode([WIDTH * SIZE, HEIGHT * SIZE])
@@ -30,30 +29,35 @@ def num_of_bomb(field, x_pos, y_pos):
     return count
 
 
+def out_of_bounds(xpos, ypos):
+    if 0 <= xpos < WIDTH and 0 <= ypos < HEIGHT:
+        return False
+    return True
+
+
 def open_tile(field, x_pos, y_pos):
-    global OPEN_COUNT   #######################################################
-    if CHECKED[y_pos][x_pos]:
+    if field[y_pos][x_pos] == OPENED:
         return
 
-    CHECKED[y_pos][x_pos] = True
+    global OPEN_COUNT
+    OPEN_COUNT += 1
 
-    for yoffset in range(-1, 2):
-        for xoffset in range(-1, 2):
-            xpos, ypos = (x_pos + xoffset, y_pos + yoffset)
-            if 0 <= xpos < WIDTH and 0 <= ypos < HEIGHT and \
-                    field[ypos][xpos] == EMPTY:
-                field[ypos][xpos] = OPENED
-                OPEN_COUNT += 1  #######################################################
-                count = num_of_bomb(field, xpos, ypos)
-                if count == 0 and \
-                        not (xpos == x_pos and ypos == y_pos):
-                    open_tile(field, xpos, ypos)
+    field[y_pos][x_pos] = OPENED
+    if num_of_bomb(field, x_pos, y_pos) != 0:
+        return
+
+    for ypos in range(y_pos - 1, y_pos + 2):
+        for xpos in range(x_pos - 1, x_pos + 2):
+            if out_of_bounds(xpos, ypos):
+                continue
+
+            open_tile(field, xpos, ypos)
 
 
 def main():
     smallfont = pygame.font.SysFont(None, 36)
     largefont = pygame.font.SysFont(None, 72)
-    message_clear = largefont.render("!!CLEARED!!",        ##############################
+    message_clear = largefont.render("!!CLEARED!!",  ##############################
                                      True, (0, 255, 225))  ####################
     message_over = largefont.render("GAME OVER!!",
                                     True, (0, 255, 225))
@@ -78,10 +82,10 @@ def main():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == MOUSEBUTTONDOWN and \
-                    event.button == 1:
-                xpos, ypos = floor(event.pos[0] / SIZE), \
-                    floor(event.pos[1] / SIZE)
+            if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                xpos = event.pos[0] // SIZE
+                ypos = event.pos[1] // SIZE
+
                 if field[ypos][xpos] == BOMB:
                     game_over = True
                 else:
@@ -94,11 +98,10 @@ def main():
                 rect = (xpos * SIZE, ypos * SIZE, SIZE, SIZE)
 
                 if tile == EMPTY or tile == BOMB:
-                    pygame.draw.rect(SURFACE,
-                                     (192, 192, 192), rect)
+                    pygame.draw.rect(SURFACE, (192, 192, 192), rect)
+                    # if tile == BOMB:
                     if game_over and tile == BOMB:
-                        pygame.draw.ellipse(SURFACE,
-                                            (225, 225, 0), rect)
+                        pygame.draw.ellipse(SURFACE, (225, 225, 0), rect)
                 elif tile == OPENED:
                     count = num_of_bomb(field, xpos, ypos)
                     if count > 0:
@@ -114,9 +117,9 @@ def main():
             pygame.draw.line(SURFACE, (96, 96, 96),
                              (0, index), (WIDTH * SIZE, index))
 
-        if OPEN_COUNT == WIDTH * HEIGHT - NUM_OF_BOMBS:         ###########################
-            SURFACE.blit(message_clear, message_rect.topleft)   ################################
-        elif game_over:                                         #######################################
+        if OPEN_COUNT == WIDTH * HEIGHT - NUM_OF_BOMBS:  ###########################
+            SURFACE.blit(message_clear, message_rect.topleft)  ################################
+        elif game_over:  #######################################
             SURFACE.blit(message_over, message_rect.topleft)
 
         pygame.display.update()

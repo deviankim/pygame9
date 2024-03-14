@@ -1,5 +1,4 @@
 import sys
-from math import floor
 from random import randint
 import pygame
 from pygame.locals import QUIT, MOUSEBUTTONDOWN
@@ -11,28 +10,27 @@ NUM_OF_BOMBS = 20
 EMPTY = 0
 BOMB = 1
 OPENED = 2
-OPEN_COUNT = 0  #######################################################
+OPEN_COUNT = 0
 
 pygame.init()
 SURFACE = pygame.display.set_mode([WIDTH * SIZE, HEIGHT * SIZE])
 FPSCLOCK = pygame.time.Clock()
 
 
-def num_of_bomb(field, x_pos, y_pos):
-    count = 0
-    for yoffset in range(-1, 2):
-        for xoffset in range(-1, 2):
-            xpos, ypos = (x_pos + xoffset, y_pos + yoffset)
-            if 0 <= xpos < WIDTH and 0 <= ypos < HEIGHT and \
-                    field[ypos][xpos] == BOMB:
-                count += 1
-    return count
-
-
 def out_of_bounds(xpos, ypos):
     if 0 <= xpos < WIDTH and 0 <= ypos < HEIGHT:
         return False
     return True
+
+
+def num_of_bombs(field, x_pos, y_pos):
+    count = 0
+    for ypos in range(y_pos - 1, y_pos + 2):
+        for xpos in range(x_pos - 1, x_pos + 2):
+            if not out_of_bounds(xpos, ypos):
+                count += 1
+                
+    return count
 
 
 def open_tile(field, x_pos, y_pos):
@@ -43,7 +41,7 @@ def open_tile(field, x_pos, y_pos):
     OPEN_COUNT += 1
 
     field[y_pos][x_pos] = OPENED
-    if num_of_bomb(field, x_pos, y_pos) != 0:
+    if num_of_bombs(field, x_pos, y_pos) != 0:
         return
 
     for ypos in range(y_pos - 1, y_pos + 2):
@@ -57,8 +55,8 @@ def open_tile(field, x_pos, y_pos):
 def main():
     smallfont = pygame.font.SysFont(None, 36)
     largefont = pygame.font.SysFont(None, 72)
-    message_clear = largefont.render("!!CLEARED!!",  ##############################
-                                     True, (0, 255, 225))  ####################
+    message_clear = largefont.render("!!CLEARED!!",
+                                     True, (0, 255, 225))
     message_over = largefont.render("GAME OVER!!",
                                     True, (0, 255, 225))
     message_rect = message_over.get_rect()
@@ -99,11 +97,11 @@ def main():
 
                 if tile == EMPTY or tile == BOMB:
                     pygame.draw.rect(SURFACE, (192, 192, 192), rect)
-                    # if tile == BOMB:
+
                     if game_over and tile == BOMB:
                         pygame.draw.ellipse(SURFACE, (225, 225, 0), rect)
                 elif tile == OPENED:
-                    count = num_of_bomb(field, xpos, ypos)
+                    count = num_of_bombs(field, xpos, ypos)
                     if count > 0:
                         num_image = smallfont.render(
                             "{}".format(count), True, (255, 255, 0))
@@ -117,9 +115,9 @@ def main():
             pygame.draw.line(SURFACE, (96, 96, 96),
                              (0, index), (WIDTH * SIZE, index))
 
-        if OPEN_COUNT == WIDTH * HEIGHT - NUM_OF_BOMBS:  ###########################
-            SURFACE.blit(message_clear, message_rect.topleft)  ################################
-        elif game_over:  #######################################
+        if OPEN_COUNT == WIDTH * HEIGHT - NUM_OF_BOMBS:
+            SURFACE.blit(message_clear, message_rect.topleft)
+        elif game_over:
             SURFACE.blit(message_over, message_rect.topleft)
 
         pygame.display.update()

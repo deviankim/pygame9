@@ -15,9 +15,7 @@ def main():
     game_over = False
     score = 0
     speed = 25
-    rocks = []
-    keymap = []
-    ship = [0, 0]  ##############
+    ship_x, ship_y = (0, 0)
     scope_image = pygame.image.load("scope.png")
     rock_image = pygame.image.load("rock.png")
 
@@ -27,41 +25,42 @@ def main():
     message_rect = message_over.get_rect()
     message_rect.center = (400, 400)
 
-    pygame.mixer.music.load("Escape.mp3")  ##############
-    pygame.mixer.music.play()  ##############
+    pygame.mixer.music.load("Escape.mp3")
+    pygame.mixer.music.play()
 
+    rocks = []
     while len(rocks) < 200:
         rocks.append({
             "pos": [randint(-1600, 1600),
                     randint(-1600, 1600),
-                    randint(0, 4095)],
+                    randint(0, 4000)],
             "theta": randint(0, 360)
         })
 
+    key_set = set([])
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == KEYDOWN:
-                if not event.key in keymap:
-                    keymap.append(event.key)
+                key_set.add(event.key)
             elif event.type == KEYUP:
-                keymap.remove(event.key)
+                key_set.remove(event.key)
 
         if not game_over:
             score += 1
             if score % 10 == 0:
                 speed += 1
 
-            if K_LEFT in keymap:
-                ship[0] -= 30
-            elif K_RIGHT in keymap:
-                ship[0] += 30
-            elif K_UP in keymap:
-                ship[1] -= 30
-            elif K_DOWN in keymap:
-                ship[1] += 30
+            if K_LEFT in key_set:
+                ship_x -= 30
+            if K_RIGHT in key_set:
+                ship_x += 30
+            if K_UP in key_set:
+                ship_y -= 30
+            if K_DOWN in key_set:
+                ship_y += 30
 
             for rock in rocks:
                 rock["pos"][2] -= speed
@@ -70,14 +69,14 @@ def main():
                     x = rock["pos"][0]
                     y = rock["pos"][1]
 
-                    if abs(x - ship[0]) < 50 and abs(y - ship[1]) < 50:
+                    if abs(x - ship_x) < 50 and abs(y - ship_y) < 50:
                         game_over = True
                         break
 
                     rock["pos"] = [
                         randint(-1600, 1600),
                         randint(-1600, 1600),
-                        4095,
+                        4000,
                     ]
 
         SURFACE.fill((0, 0, 0))
@@ -85,17 +84,19 @@ def main():
 
         for rock in rocks:
             zpos = rock["pos"][2]
-            xpos = ((rock["pos"][0] - ship[0]) * 512) / zpos + W / 2
-            ypos = ((rock["pos"][1] - ship[1]) * 512) / zpos + H / 2
-            size = (50 * 2 << 9) / zpos
-            rotated = pygame.transform.rotozoom(rock_image, rock["theta"], size / 145)
+            xpos = ((rock["pos"][0] - ship_x) * 500) / zpos + W / 2
+            ypos = ((rock["pos"][1] - ship_y) * 500) / zpos + H / 2
+            size = (50 * 500) / zpos
+            rotated = pygame.transform.rotozoom(rock_image,
+                                                rock["theta"],
+                                                size / 145)
             SURFACE.blit(rotated, (xpos, ypos))
 
-        SURFACE.blit(scope_image, (0, 0))  ##############
+        # SURFACE.blit(scope_image, (0, 0))
 
         if game_over:
             SURFACE.blit(message_over, message_rect)
-            pygame.mixer.music.stop()  ##############
+            pygame.mixer.music.stop()
 
         score_str = str(score).zfill(6)
         score_image = scorefont.render(score_str, True, (0, 255, 0))

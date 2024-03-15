@@ -15,7 +15,7 @@ def main():
     speed = 25
     rocks = []
     keymap = []
-    ship = [0, 0]
+    ship_x, ship_y = (0, 0)
     scope_image = pygame.image.load("scope.png")
     rock_image = pygame.image.load("rock.png")
 
@@ -52,22 +52,22 @@ def main():
             if score % 10 == 0:
                 speed += 1
             if K_a in keymap or K_LEFT in keymap:
-                ship[0] -= 30
+                ship_x -= 30
             elif K_d in keymap or K_RIGHT in keymap:
-                ship[0] += 30
+                ship_x += 30
             elif K_UP in keymap or K_w in keymap:
-                ship[1] -= 30
+                ship_y -= 30
             elif K_s in keymap or K_DOWN in keymap:
-                ship[1] += 30
+                ship_y += 30
 
-            ship[0] = max(-800, min(800, ship[0]))
-            ship[1] = max(-800, min(800, ship[1]))
+            ship_x = max(-800, min(800, ship_x))
+            ship_y = max(-800, min(800, ship_y))
 
             for rock in rocks:
                 rock["pos"][2] -= speed
                 if rock["pos"][2] < 64:
-                    if abs(rock["pos"][0] - ship[0]) < 50 and \
-                            abs(rock["pos"][1] - ship[1]) < 50:
+                    if abs(rock["pos"][0] - ship_x) < 50 and \
+                            abs(rock["pos"][1] - ship_y) < 50:
                         game_over = True
                     rock["pos"] = [randint(-1600, 1600), randint(-1600, 1600), 4095]
 
@@ -78,8 +78,8 @@ def main():
 
         for rock in rocks:
             zpos = rock["pos"][2]
-            xpos = ((rock["pos"][0] - ship[0]) << 9) / zpos + 400
-            ypos = ((rock["pos"][1] - ship[1]) << 9) / zpos + 400
+            xpos = ((rock["pos"][0] - ship_x) << 9) / zpos + 400
+            ypos = ((rock["pos"][1] - ship_y) << 9) / zpos + 400
             size = (50 << 9) / zpos
             rotated = pygame.transform.rotozoom(rock_image, rock["theta"], size / 145)
             SURFACE.blit(rotated, (xpos, ypos))

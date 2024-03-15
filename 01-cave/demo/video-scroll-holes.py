@@ -1,8 +1,7 @@
 import sys
-from random import randint
 
 import pygame
-from pygame.locals import QUIT, KEYDOWN, K_SPACE, Rect, K_q, K_f, KEYUP
+from pygame.locals import QUIT, KEYDOWN, Rect, K_q, K_f, KEYUP
 
 pygame.init()
 pygame.key.set_repeat(5, 5)
@@ -27,7 +26,7 @@ def main():
     ship_y = 250
     velocity = 0
     ship_image = pygame.image.load("ship.png")
-    slope = 20
+    slope = 50
 
     holes = []
     for i in range(walls):
@@ -37,59 +36,66 @@ def main():
 
         process_event_queue()
 
-        SURFACE.fill(color_bg)
+        clear_screen()
 
         draw_holes(holes)
-
         update_screen(1)
         edge = holes[-1].copy()
-        pygame.draw.rect(SURFACE, color_gray, edge)
-        update_screen(1) # 테스트 샘플
+        draw_hole(color_gray, edge)
+        update_screen(1)
         test = edge.move(0, slope)
-        pygame.draw.rect(SURFACE, color_hole, edge)
-        pygame.draw.rect(SURFACE, color_yellow, test)
-        update_screen(1) # 테스트
-        pygame.draw.rect(SURFACE, color_bg, test)
-        pygame.draw.rect(SURFACE, color_hole, edge)
+        draw_hole(color_hole, edge)
+        draw_hole(color_yellow, test)
+        update_screen(1)
+        clear_screen()
+        draw_holes(holes)
 
         if test.top <= 0 or test.bottom >= 600:
             slope *= -1
-            edge.inflate_ip(0, -20)  # 동굴 높이를 20씩 줄이기
+            edge.move_ip(hole_width, slope)
+            draw_hole(color_yellow, edge)
+            update_screen(1)
+            edge.inflate_ip(0, -20)
+            draw_hole(color_red, edge)
+            update_screen(1)
+            clear_screen()
+        else:
+            edge.move_ip(hole_width, slope)
+            draw_hole(color_yellow, edge)
+            update_screen(1)
 
-        edge.move_ip(hole_width, slope)
         holes.append(edge)
-
-        pygame.draw.rect(SURFACE, color_yellow, edge)
-        update_screen(1)
 
         draw_holes(holes)
         update_screen(1)
 
         # draw hole to be deleted
         front = holes[0]
-        pygame.draw.rect(SURFACE, color_red, front)
+        draw_hole(color_red, front)
         update_screen(1)
 
-        pygame.draw.rect(SURFACE, color_bg, front)
+        draw_hole(color_bg, front)
         update_screen(1)
 
         del holes[0]
-        for hole in holes:
-            pygame.draw.rect(SURFACE, color_yellow, hole)
-            update_screen(5)
-            pygame.draw.rect(SURFACE, color_bg, hole)
-            hole.move_ip(-hole_width, 0)
-            pygame.draw.rect(SURFACE, color_yellow, hole)
-            update_screen(5)
-            pygame.draw.rect(SURFACE, color_hole, hole)
-            update_screen(5)
-
+        draw_holes(holes)
         update_screen(1)
+
+        holes = [hole.move(-hole_width, 0) for hole in holes]
+
+
+def clear_screen():
+    SURFACE.fill(color_bg)
+
+
+def draw_hole(color, rect):
+    pygame.draw.rect(SURFACE, (255, 255, 255), rect.inflate(+2, +2))
+    pygame.draw.rect(SURFACE, color, rect.inflate(-2, -2))
 
 
 def draw_holes(holes):
     for hole in holes:
-        pygame.draw.rect(SURFACE, color_hole, hole)
+        draw_hole(color_hole, hole)
 
 
 def update_screen(fps=1):

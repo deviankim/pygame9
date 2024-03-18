@@ -99,6 +99,7 @@ def draw_holes(holes):
 
 
 def update_screen(fps=1):
+    process_event_queue()
     pygame.display.update()
     FPSCLOCK.tick(30 if ff else fps)
 
